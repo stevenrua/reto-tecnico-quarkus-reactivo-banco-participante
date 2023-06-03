@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class Bank {
-    private Long idBanco;
-    private String nombreBanco;
+public class Country {
+    private Long codigoPais;
+    private String nombrePais;
+    private Integer indicativoMovil;
 }

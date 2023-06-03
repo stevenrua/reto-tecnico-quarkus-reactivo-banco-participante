@@ -22,13 +22,13 @@ public class SqlBankAdapter implements BankRepository {
         return sqlBankRepository.listAll()
                 .map(bankEntities -> bankEntities.stream()
                         .map(bankEntity -> Bank.builder()
-                                .id(bankEntity.getId())
+                                .idBanco(bankEntity.getIdBanco())
                                 .nombreBanco(bankEntity.getNombreBanco())
                                 .build())
                         .collect(Collectors.toList()))
                 .map(listaBancos ->{
                     if (listaBancos.isEmpty()) {
-                        throw new WebApplicationException("ERR-00: Lista de banco sin contenido");
+                        throw new WebApplicationException("ERR-B00: Lista de banco sin contenido");
                     }
                     return listaBancos;
                 });
@@ -37,9 +37,9 @@ public class SqlBankAdapter implements BankRepository {
     @WithSession
     public Uni<Bank> buscarBancoPorId(Long id) {
         return sqlBankRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-01: Banco con ese id no encontrado"))
+                .onItem().ifNull().failWith(new WebApplicationException("ERR-B01: Banco con ese id no encontrado"))
                 .map(bankEntity -> Bank.builder()
-                        .id(bankEntity.getId())
+                        .idBanco(bankEntity.getIdBanco())
                         .nombreBanco(bankEntity.getNombreBanco())
                         .build());
     }
@@ -51,7 +51,7 @@ public class SqlBankAdapter implements BankRepository {
                         .nombreBanco(bank.getNombreBanco())
                 .build())
                 .map(bankEntity -> Bank.builder()
-                        .id(bankEntity.getId())
+                        .idBanco(bankEntity.getIdBanco())
                         .nombreBanco(bankEntity.getNombreBanco())
                         .build());
     }
@@ -61,19 +61,23 @@ public class SqlBankAdapter implements BankRepository {
     @WithTransaction
     public Uni<Bank> actualizarBanco(Long id, Bank bank) {
         return sqlBankRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-01: Banco con ese id no encontrado"))
+                .onItem().ifNull().failWith(new WebApplicationException("ERR-B01: Banco con ese id no encontrado"))
                 .flatMap(bankEntity -> {
                     bankEntity.setNombreBanco(bank.getNombreBanco());
                     return sqlBankRepository.persist(bankEntity)
                             .map(entity -> Bank.builder()
-                                    .id(entity.getId())
+                                    .idBanco(bankEntity.getIdBanco())
                                     .nombreBanco(entity.getNombreBanco())
                                     .build());
                 });
     }
 
     @Override
+    @WithSession
+    @WithTransaction
     public Uni<Void> borrarBanco(Long id) {
-        return null;
+        return sqlBankRepository.findById(id)
+                .onItem().ifNull().failWith(new WebApplicationException("ERR-B01: Banco con ese id no encontrado"))
+                .flatMap(sqlBankRepository::delete);
     }
 }

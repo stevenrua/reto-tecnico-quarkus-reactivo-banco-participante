@@ -11,12 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "bancos")
-public class BankEntity {
+@Table(name = "paises")
+public class CountryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_banco")
-    private Long idBanco;
-    @Column(name = "nombre_banco")
-    private String nombreBanco;
+    @Column(name = "codigo_pais")
+    private Long codigoPais;
+    @Column(name = "nombre_pais")
+    private String nombrePais;
+    @Column(name = "indicativo_movil")
+    private Integer indicativoMovil;
 }
