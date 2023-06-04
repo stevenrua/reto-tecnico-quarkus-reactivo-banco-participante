@@ -1,8 +1,13 @@
 package pa.com.banco.panama.application.configuration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import pa.com.banco.panama.domain.repositories.AliasTypeRepository;
 import pa.com.banco.panama.domain.repositories.BankRepository;
 import pa.com.banco.panama.domain.repositories.CountryRepository;
+import pa.com.banco.panama.domain.usecase.aliastypeusecase.DeleteAliasTypeUseCase;
+import pa.com.banco.panama.domain.usecase.aliastypeusecase.GetAliasTypeUseCase;
+import pa.com.banco.panama.domain.usecase.aliastypeusecase.ListAliasTypeUseCase;
+import pa.com.banco.panama.domain.usecase.aliastypeusecase.SaveAliasTypeUseCase;
 import pa.com.banco.panama.domain.usecase.bankusecase.*;
 import pa.com.banco.panama.domain.usecase.countryusecase.DeleteCountryUseCase;
 import pa.com.banco.panama.domain.usecase.countryusecase.GetByCountryCodeUseCase;
@@ -52,5 +57,22 @@ public class BeanConfig {
     @Produces
     public DeleteCountryUseCase deleteCountryUseCase(CountryRepository countryRepository){
         return new DeleteCountryUseCase(countryRepository);
+    }
+
+    @Produces
+    public ListAliasTypeUseCase listAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
+        return new ListAliasTypeUseCase(aliasTypeRepository);
+    }
+    @Produces
+    public GetAliasTypeUseCase getAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
+        return new GetAliasTypeUseCase(aliasTypeRepository);
+    }
+    @Produces
+    public SaveAliasTypeUseCase saveAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
+        return new SaveAliasTypeUseCase(aliasTypeRepository);
+    }
+    @Produces
+    public DeleteAliasTypeUseCase deleteAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
+        return new DeleteAliasTypeUseCase(aliasTypeRepository);
     }
 }

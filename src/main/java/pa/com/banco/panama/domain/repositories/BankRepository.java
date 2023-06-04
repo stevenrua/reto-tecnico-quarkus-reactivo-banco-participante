@@ -1,8 +1,6 @@
 package pa.com.banco.panama.domain.repositories;
-
 import io.smallrye.mutiny.Uni;
 import pa.com.banco.panama.domain.models.Bank;
-
 import java.util.List;
 
 public interface BankRepository {

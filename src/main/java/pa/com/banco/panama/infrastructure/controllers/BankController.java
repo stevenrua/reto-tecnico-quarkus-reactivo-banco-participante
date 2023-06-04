@@ -1,5 +1,4 @@
 package pa.com.banco.panama.infrastructure.controllers;
-
 import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -7,7 +6,6 @@ import jakarta.ws.rs.ext.Provider;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.repositories.BankRepository;
 import pa.com.banco.panama.domain.models.Bank;
-
 import java.util.List;
 
 @Path("/banco")

@@ -1,5 +1,4 @@
 package pa.com.banco.panama.domain.models;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

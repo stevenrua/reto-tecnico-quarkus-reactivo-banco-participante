@@ -1,5 +1,4 @@
 package pa.com.banco.panama.infrastructure.adapters;
-
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
@@ -10,7 +9,6 @@ import pa.com.banco.panama.domain.models.Country;
 import pa.com.banco.panama.domain.repositories.CountryRepository;
 import pa.com.banco.panama.infrastructure.entities.CountryEntity;
 import pa.com.banco.panama.infrastructure.repository.SqlCountryRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

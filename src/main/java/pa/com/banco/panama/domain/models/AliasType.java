@@ -6,8 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class Country {
-    private Long codigoPais;
-    private String nombrePais;
-    private Integer indicativoMovil;
+public class AliasType {
+    private Long idTipoAlias;
+    private String descripcion;
 }
