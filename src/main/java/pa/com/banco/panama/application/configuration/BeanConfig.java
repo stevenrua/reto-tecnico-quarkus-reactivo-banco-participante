@@ -4,6 +4,7 @@ import jakarta.enterprise.inject.Produces;
 import pa.com.banco.panama.domain.repositories.AliasTypeRepository;
 import pa.com.banco.panama.domain.repositories.BankRepository;
 import pa.com.banco.panama.domain.repositories.CountryRepository;
+import pa.com.banco.panama.domain.repositories.UserStateRepository;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.DeleteAliasTypeUseCase;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.GetAliasTypeUseCase;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.ListAliasTypeUseCase;
@@ -13,6 +14,10 @@ import pa.com.banco.panama.domain.usecase.countryusecase.DeleteCountryUseCase;
 import pa.com.banco.panama.domain.usecase.countryusecase.GetByCountryCodeUseCase;
 import pa.com.banco.panama.domain.usecase.countryusecase.ListCountriesUseCase;
 import pa.com.banco.panama.domain.usecase.countryusecase.SaveCountryUseCase;
+import pa.com.banco.panama.domain.usecase.userstateusecase.DeleteUserStateUseCase;
+import pa.com.banco.panama.domain.usecase.userstateusecase.GetUserStateUseCase;
+import pa.com.banco.panama.domain.usecase.userstateusecase.ListUserStateUSeCase;
+import pa.com.banco.panama.domain.usecase.userstateusecase.SaveUserStateUseCase;
 
 @ApplicationScoped
 public class BeanConfig {
@@ -41,7 +46,7 @@ public class BeanConfig {
         return new DeleteBankUseCase(bankRepository);
     }
 
-    //USecase Pais
+    //Usecase Pais
     @Produces
     public ListCountriesUseCase listCountriesUseCase(CountryRepository countryRepository){
         return new ListCountriesUseCase(countryRepository);
@@ -59,6 +64,7 @@ public class BeanConfig {
         return new DeleteCountryUseCase(countryRepository);
     }
 
+    //USecasetipoalias
     @Produces
     public ListAliasTypeUseCase listAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
         return new ListAliasTypeUseCase(aliasTypeRepository);
@@ -74,5 +80,22 @@ public class BeanConfig {
     @Produces
     public DeleteAliasTypeUseCase deleteAliasTypeUseCase(AliasTypeRepository aliasTypeRepository){
         return new DeleteAliasTypeUseCase(aliasTypeRepository);
+    }
+
+    @Produces
+    public ListUserStateUSeCase listUserStateUSeCase(UserStateRepository userStateRepository){
+        return new ListUserStateUSeCase(userStateRepository);
+    }
+    @Produces
+    public GetUserStateUseCase getUserStateUseCase(UserStateRepository userStateRepository){
+        return new GetUserStateUseCase(userStateRepository);
+    }
+    @Produces
+    public SaveUserStateUseCase saveUserStateUseCase(UserStateRepository userStateRepository){
+        return new SaveUserStateUseCase(userStateRepository);
+    }
+    @Produces
+    public DeleteUserStateUseCase deleteUserStateUseCase(UserStateRepository userStateRepository){
+        return new DeleteUserStateUseCase(userStateRepository);
     }
 }
