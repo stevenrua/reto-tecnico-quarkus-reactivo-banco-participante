@@ -1,10 +1,10 @@
 package pa.com.banco.panama.application.configuration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import pa.com.banco.panama.domain.repositories.AliasTypeRepository;
-import pa.com.banco.panama.domain.repositories.BankRepository;
-import pa.com.banco.panama.domain.repositories.CountryRepository;
-import pa.com.banco.panama.domain.repositories.UserStateRepository;
+import pa.com.banco.panama.domain.repositories.*;
+import pa.com.banco.panama.domain.usecase.accountusecase.GetAccountByNumeroCuentaUseCase;
+import pa.com.banco.panama.domain.usecase.accountusecase.GetAccountUseCase;
+import pa.com.banco.panama.domain.usecase.accountusecase.SaveAccountUseCase;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.DeleteAliasTypeUseCase;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.GetAliasTypeUseCase;
 import pa.com.banco.panama.domain.usecase.aliastypeusecase.ListAliasTypeUseCase;
@@ -82,6 +82,8 @@ public class BeanConfig {
         return new DeleteAliasTypeUseCase(aliasTypeRepository);
     }
 
+    //USecaseestadousuario
+
     @Produces
     public ListUserStateUSeCase listUserStateUSeCase(UserStateRepository userStateRepository){
         return new ListUserStateUSeCase(userStateRepository);
@@ -97,5 +99,20 @@ public class BeanConfig {
     @Produces
     public DeleteUserStateUseCase deleteUserStateUseCase(UserStateRepository userStateRepository){
         return new DeleteUserStateUseCase(userStateRepository);
+    }
+
+    //USecasecuenta
+
+    @Produces
+    public SaveAccountUseCase saveAccountUseCase(AccountRepository accountRepository){
+        return new SaveAccountUseCase(accountRepository);
+    }
+    @Produces
+    public GetAccountUseCase getAccountUseCase(AccountRepository accountRepository){
+        return new GetAccountUseCase(accountRepository);
+    }
+    @Produces
+    public GetAccountByNumeroCuentaUseCase getAccountByNumeroCuentaUseCase(AccountRepository accountRepository){
+        return new GetAccountByNumeroCuentaUseCase(accountRepository);
     }
 }
