@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
+import pa.com.banco.panama.domain.errorenum.ErrorCode;
 import pa.com.banco.panama.domain.models.AliasType;
 import pa.com.banco.panama.domain.repositories.AliasTypeRepository;
 import pa.com.banco.panama.infrastructure.entities.AliasTypeEntity;
@@ -28,7 +29,7 @@ public class SqlAliasTypeAdapter implements AliasTypeRepository {
                         .collect(Collectors.toList()))
                 .map(listaBancos ->{
                     if (listaBancos.isEmpty()) {
-                        throw new WebApplicationException("ERR-AT00: Lista de tipo alias sin contenido");
+                        throw new WebApplicationException(ErrorCode.ERROR_AT00_LIST_ALIAS_TYPE_EMPTY.getMessage());
                     }
                     return listaBancos;
                 });
@@ -37,7 +38,7 @@ public class SqlAliasTypeAdapter implements AliasTypeRepository {
     @WithSession
     public Uni<AliasType> buscarTipoAliasPorId(Long id) {
         return sqlAliasTypeRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-AT01: Tipo Alias con ese id no encontrado"))
+                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_AT01_ALIAS_TYPE_NOT_FOUND.getMessage()))
                 .map(aliasTypeEntity -> AliasType.builder()
                         .idTipoAlias(aliasTypeEntity.getIdTipoAlias())
                         .descripcion(aliasTypeEntity.getDescripcion())
@@ -61,7 +62,7 @@ public class SqlAliasTypeAdapter implements AliasTypeRepository {
     @WithTransaction
     public Uni<Void> borrarTipoAlias(Long id) {
         return sqlAliasTypeRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-AT01: Tipo Alias con ese id no encontrado"))
+                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_AT01_ALIAS_TYPE_NOT_FOUND.getMessage()))
                 .flatMap(sqlAliasTypeRepository::delete);
     }
 }

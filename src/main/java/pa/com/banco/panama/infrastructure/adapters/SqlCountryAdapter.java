@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
+import pa.com.banco.panama.domain.errorenum.ErrorCode;
 import pa.com.banco.panama.domain.models.Country;
 import pa.com.banco.panama.domain.repositories.CountryRepository;
 import pa.com.banco.panama.infrastructure.entities.CountryEntity;
@@ -29,7 +30,7 @@ public class SqlCountryAdapter implements CountryRepository {
                         .collect(Collectors.toList()))
                 .map(listaPaises ->{
                     if (listaPaises.isEmpty()) {
-                        throw new WebApplicationException("ERR-C00: Lista de pais sin contenido");
+                        throw new WebApplicationException(ErrorCode.ERROR_C00_LIST_COUNTRY_EMPTY.getMessage());
                     }
                     return listaPaises;
                 });
@@ -39,7 +40,7 @@ public class SqlCountryAdapter implements CountryRepository {
     @WithSession
     public Uni<Country> buscarPorCodigoPais(Long codigoPais) {
         return sqlCountryRepository.findById(codigoPais)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-C01: País con ese id no encontrado"))
+                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_C01_COUNTRY_NOT_FOUND.getMessage()))
                 .map(countryEntity -> Country.builder()
                         .codigoPais(countryEntity.getCodigoPais())
                         .nombrePais(countryEntity.getNombrePais())
@@ -66,9 +67,7 @@ public class SqlCountryAdapter implements CountryRepository {
     @WithSession
     public Uni<Void> borrarPais(Long codigoPais) {
         return sqlCountryRepository.findById(codigoPais)
-                .onItem().ifNull().failWith(new WebApplicationException("ERR-C01: País con ese id no encontrado"))
-                .flatMap(countryEntity -> {
-                    return sqlCountryRepository.delete(countryEntity);
-                });
+                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_C01_COUNTRY_NOT_FOUND.getMessage()))
+                .flatMap(sqlCountryRepository::delete);
     }
 }
