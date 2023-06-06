@@ -21,7 +21,7 @@ public class AccountController {
         return accountRepository.buscarCuentaPorIdBanco(idBanco);
     }
     @GET
-    @Path("/{numeroCuenta}")
+    @Path("/numcuenta/{numeroCuenta}")
     public Uni<Account> buscarCuentaPorNumeroDeCuenta(@PathParam("numeroCuenta") String numeroCuenta){
         return accountRepository.buscarCuentaPorNumeroCuenta(numeroCuenta);
     }

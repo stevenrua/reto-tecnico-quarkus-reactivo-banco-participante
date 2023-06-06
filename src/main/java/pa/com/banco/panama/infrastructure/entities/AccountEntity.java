@@ -18,6 +18,7 @@ public class AccountEntity {
     private Long idCuenta;
     @Column(name = "numero_cuenta", unique = true)
     private String numeroCuenta;
-    @Column(name = "id_banco", unique = true)
-    private Long idBanco;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "id_banco", unique = true)
+    private BankEntity banco;
 }

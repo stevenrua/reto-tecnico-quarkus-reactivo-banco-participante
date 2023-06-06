@@ -9,5 +9,5 @@ import lombok.Data;
 public class Account {
     private Long idCuenta;
     private String numeroCuenta;
-    private Long idBanco;
+    private Bank banco;
 }

@@ -7,11 +7,12 @@ import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.errorenum.ErrorCode;
 import pa.com.banco.panama.domain.models.Account;
+import pa.com.banco.panama.domain.models.Bank;
 import pa.com.banco.panama.domain.repositories.AccountRepository;
 import pa.com.banco.panama.domain.repositories.BankRepository;
 import pa.com.banco.panama.infrastructure.entities.AccountEntity;
+import pa.com.banco.panama.infrastructure.entities.BankEntity;
 import pa.com.banco.panama.infrastructure.repository.SqlAccountRepository;
-import pa.com.banco.panama.infrastructure.repository.SqlBankRepository;
 
 @RequiredArgsConstructor
 @ApplicationScoped
@@ -24,9 +25,9 @@ public class SqlAccountAdapter implements AccountRepository {
         return sqlAccountRepository.findByIdBanco(idBanco)
                 .onItem().ifNull().failWith(new WebApplicationException("No se encontre cuenta con id de de ese banco"))
                 .map(accountEntity -> Account.builder()
-                        .idCuenta(accountEntity.getIdBanco())
+                        .idCuenta(accountEntity.getIdCuenta())
                         .numeroCuenta(accountEntity.getNumeroCuenta())
-                        .idBanco(accountEntity.getIdBanco())
+                        .banco(Account.builder().build().getBanco())
                         .build());
     }
 
@@ -38,7 +39,7 @@ public class SqlAccountAdapter implements AccountRepository {
                 .map(accountEntity -> Account.builder()
                         .idCuenta(accountEntity.getIdCuenta())
                         .numeroCuenta(accountEntity.getNumeroCuenta())
-                        .idBanco(accountEntity.getIdBanco())
+                        .banco(Account.builder().build().getBanco())
                         .build());
     }
 
@@ -46,9 +47,9 @@ public class SqlAccountAdapter implements AccountRepository {
     @WithTransaction
     @WithSession
     public Uni<Account> guardarCuenta(Account account) {
-        return bankRepository.buscarBancoPorId(account.getIdBanco())
+        return bankRepository.buscarBancoPorId(account.getBanco().getIdBanco())
                 .flatMap(bank -> {
-                    return sqlAccountRepository.findByIdBanco(account.getIdBanco())
+                    return sqlAccountRepository.findByIdBanco(account.getBanco().getIdBanco())
                             .onItem().ifNotNull().failWith(new WebApplicationException(ErrorCode.ERROR_ACC00_BANK_REGISTERED.getMessage()))
                             .flatMap(account1 -> {
                                 return sqlAccountRepository.findByNumeroCuenta(account.getNumeroCuenta())
@@ -56,24 +57,17 @@ public class SqlAccountAdapter implements AccountRepository {
                                         .flatMap(ignore -> {
                                             return sqlAccountRepository.persist(AccountEntity.builder()
                                                             .numeroCuenta(account.getNumeroCuenta())
-                                                            .idBanco(account.getIdBanco())
+                                                            .banco(BankEntity.builder().idBanco(account.getBanco().getIdBanco()).build())
                                                             .build())
                                                     .map(accountEntity -> Account.builder()
                                                             .idCuenta(accountEntity.getIdCuenta())
                                                             .numeroCuenta(accountEntity.getNumeroCuenta())
-                                                            .idBanco(accountEntity.getIdBanco())
+                                                            .banco(Bank.builder()
+                                                                    .idBanco(accountEntity.getBanco().getIdBanco())
+                                                                    .nombreBanco(bank.getNombreBanco()).build())
                                                             .build());
                                         });
                             });
                 });
-        /*return sqlAccountRepository.persist(AccountEntity.builder()
-                .numeroCuenta(account.getNumeroCuenta())
-                        .idBanco(account.getIdBanco())
-                        .build())
-                .map(accountEntity -> Account.builder()
-                        .idCuenta(accountEntity.getIdCuenta())
-                        .numeroCuenta(accountEntity.getNumeroCuenta())
-                        .idBanco(accountEntity.getIdBanco())
-                        .build());*/
     }
 }

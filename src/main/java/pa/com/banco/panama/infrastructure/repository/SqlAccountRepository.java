@@ -8,7 +8,7 @@ import pa.com.banco.panama.infrastructure.entities.AccountEntity;
 @ApplicationScoped
 public class SqlAccountRepository implements PanacheRepositoryBase<AccountEntity, Long> {
     public Uni<AccountEntity> findByIdBanco(Long idBanco){
-        return find("idBanco", idBanco).firstResult();
+        return find("banco.idBanco", idBanco).firstResult();
     }
     public Uni<AccountEntity> findByNumeroCuenta(String numeroCuenta){
         return find("numeroCuenta", numeroCuenta).firstResult();
