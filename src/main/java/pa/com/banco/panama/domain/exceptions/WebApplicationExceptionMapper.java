@@ -1,4 +1,4 @@
-package pa.com.banco.panama.infrastructure.exceptions;
+package pa.com.banco.panama.domain.exceptions;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

@@ -18,6 +18,7 @@ import pa.com.banco.panama.domain.usecase.userstateusecase.DeleteUserStateUseCas
 import pa.com.banco.panama.domain.usecase.userstateusecase.GetUserStateUseCase;
 import pa.com.banco.panama.domain.usecase.userstateusecase.ListUserStateUSeCase;
 import pa.com.banco.panama.domain.usecase.userstateusecase.SaveUserStateUseCase;
+import pa.com.banco.panama.domain.usecase.userusecase.SaveUserUseCase;
 
 @ApplicationScoped
 public class BeanConfig {
@@ -114,5 +115,11 @@ public class BeanConfig {
     @Produces
     public GetAccountByNumeroCuentaUseCase getAccountByNumeroCuentaUseCase(AccountRepository accountRepository){
         return new GetAccountByNumeroCuentaUseCase(accountRepository);
+    }
+
+    //UseCaseUsuario
+    @Produces
+    public SaveUserUseCase saveUserUseCase(UserRepository userRepository){
+        return new SaveUserUseCase(userRepository);
     }
 }

@@ -12,8 +12,6 @@ public enum ErrorCode {
     ERROR_ACC00_BANK_REGISTERED("ERR-ACC00: Lo sentimos, ese banco ya esta registrado en una de nuestras cuentas"),
     ERROR_ACC01_NUMBER_ACCOUNT_REGISTERED("ERR-ACC01: Lo sentimos, el número de cuenta ya esta registrado");
 
-
-
     private String message;
 
     ErrorCode(String message) {

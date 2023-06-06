@@ -2,7 +2,6 @@ package pa.com.banco.panama.infrastructure.repository;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import pa.com.banco.panama.domain.models.Account;
 import pa.com.banco.panama.infrastructure.entities.AccountEntity;
 
 @ApplicationScoped
