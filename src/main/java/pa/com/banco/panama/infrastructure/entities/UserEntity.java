@@ -1,10 +1,11 @@
 package pa.com.banco.panama.infrastructure.entities;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pa.com.banco.panama.domain.errorenum.ErrorCode;
 
 @Data
 @AllArgsConstructor
@@ -31,4 +32,7 @@ public class UserEntity {
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_tipo_alias")
     private AliasTypeEntity tipoAlias;
+    public static String getInvalidFormatAliasMessage() {
+        return ErrorCode.ERROR_U01_INVALID_FORMAT_ALIAS.getMessage();
+    }
 }

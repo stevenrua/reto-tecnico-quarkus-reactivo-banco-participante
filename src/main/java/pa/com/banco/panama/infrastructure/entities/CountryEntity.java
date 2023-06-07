@@ -1,5 +1,4 @@
 package pa.com.banco.panama.infrastructure.entities;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

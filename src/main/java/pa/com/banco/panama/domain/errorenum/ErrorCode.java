@@ -10,7 +10,10 @@ public enum ErrorCode {
     ERROR_US00_LIST_USER_STATE_EMPTY("ERR-US00: Lista estado usuario sin contenido"),
     ERROR_US01_USER_STATE_NOT_FOUND("ERR-US01: Estado usuario no encontrado"),
     ERROR_ACC00_BANK_REGISTERED("ERR-ACC00: Lo sentimos, ese banco ya esta registrado en una de nuestras cuentas"),
-    ERROR_ACC01_NUMBER_ACCOUNT_REGISTERED("ERR-ACC01: Lo sentimos, el número de cuenta ya esta registrado");
+    ERROR_ACC01_NUMBER_ACCOUNT_REGISTERED("ERR-ACC01: Lo sentimos, el número de cuenta ya esta registrado"),
+    ERROR_U00_ALIAS_REGISTERED("ERR-U00: Lo sentimos ese alias ya se encuentra registrado en nuestro sistema"),
+    ERROR_U01_INVALID_FORMAT_ALIAS("ERR-U01: El alias(telefono) debe cumplir con el formato panameño, debe empezar con 6 y contener 8 digitos");
+
 
     private String message;
 
