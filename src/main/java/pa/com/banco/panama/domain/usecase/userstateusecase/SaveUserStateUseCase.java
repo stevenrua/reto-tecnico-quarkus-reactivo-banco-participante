@@ -9,6 +9,7 @@ import pa.com.banco.panama.domain.repositories.UserStateRepository;
 public class SaveUserStateUseCase {
     private final UserStateRepository userStateRepository;
     public Uni<UserState> guardarEstadoUsuario(UserState userState) {
+        System.out.println("Pasa al caso de uso de estadoUsuario y lo crea");
         return userStateRepository.guardarEstadoUsuario(userState);
     }
 }

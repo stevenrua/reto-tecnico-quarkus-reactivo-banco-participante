@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
-@Data
+/*@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,4 +19,4 @@ public class AuditEntity {
     private AccountEntity cuenta;
     private Timestamp fechaAlta;
     private UserStateEntity estadoUsuario;
-}
+}*/

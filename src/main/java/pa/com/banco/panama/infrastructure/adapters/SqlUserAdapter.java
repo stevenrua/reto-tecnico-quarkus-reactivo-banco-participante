@@ -2,12 +2,11 @@ package pa.com.banco.panama.infrastructure.adapters;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.errorenum.ErrorCode;
+import pa.com.banco.panama.domain.exceptions.MyExceptions;
 import pa.com.banco.panama.domain.models.*;
 import pa.com.banco.panama.domain.repositories.*;
-import pa.com.banco.panama.domain.validalias.ValidationAlias;
 import pa.com.banco.panama.infrastructure.entities.*;
 import pa.com.banco.panama.infrastructure.repository.SqlUserRepository;
 
@@ -22,9 +21,8 @@ public class SqlUserAdapter implements UserRepository {
     @Override
     @WithTransaction
     public Uni<User> guardarUsuario(User user) {
-        if(!ValidationAlias.isValidAlias(user.getAlias())) throw new WebApplicationException(ErrorCode.ERROR_U01_INVALID_FORMAT_ALIAS.getMessage());
         return sqlUserRepository.findByAlias(user.getAlias())
-                .onItem().ifNotNull().failWith(new WebApplicationException(ErrorCode.ERROR_U00_ALIAS_REGISTERED.getMessage()))
+                .onItem().ifNotNull().failWith(new MyExceptions(ErrorCode.ERROR_U01_ALIAS_REGISTERED.getMessage()))
                 .flatMap(alias -> {
                     return aliasTypeRepository.buscarTipoAliasPorId(user.getTipoAlias().getIdTipoAlias())
                             .flatMap(aliasType -> {

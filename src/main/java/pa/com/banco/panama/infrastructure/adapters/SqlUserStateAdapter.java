@@ -3,9 +3,9 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.errorenum.ErrorCode;
+import pa.com.banco.panama.domain.exceptions.MyExceptions;
 import pa.com.banco.panama.domain.models.UserState;
 import pa.com.banco.panama.domain.repositories.UserStateRepository;
 import pa.com.banco.panama.infrastructure.entities.UserStateEntity;
@@ -29,7 +29,7 @@ public class SqlUserStateAdapter implements UserStateRepository {
                         .collect(Collectors.toList()))
                 .map(listaEstados ->{
                     if (listaEstados.isEmpty()) {
-                        throw new WebApplicationException(ErrorCode.ERROR_US00_LIST_USER_STATE_EMPTY.getMessage());
+                        throw new MyExceptions(ErrorCode.ERROR_US00_LIST_USER_STATE_EMPTY.getMessage());
                     }
                     return listaEstados;
                 });
@@ -39,7 +39,7 @@ public class SqlUserStateAdapter implements UserStateRepository {
     @WithSession
     public Uni<UserState> buscarEstadoUsuarioPorId(Long id) {
         return sqlUserStateRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_US01_USER_STATE_NOT_FOUND.getMessage()))
+                .onItem().ifNull().failWith(new MyExceptions(ErrorCode.ERROR_US01_USER_STATE_NOT_FOUND.getMessage()))
                 .map(userStateEntity -> UserState.builder()
                         .idEstado(userStateEntity.getIdEstado())
                         .nombre(userStateEntity.getNombre())
@@ -63,7 +63,7 @@ public class SqlUserStateAdapter implements UserStateRepository {
     @WithTransaction
     public Uni<Void> borrarEstadoUsuario(Long id) {
         return sqlUserStateRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_US01_USER_STATE_NOT_FOUND.getMessage()))
+                .onItem().ifNull().failWith(new MyExceptions(ErrorCode.ERROR_US01_USER_STATE_NOT_FOUND.getMessage()))
                 .flatMap(sqlUserStateRepository::delete);
     }
 }

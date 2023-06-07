@@ -8,16 +8,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.models.User;
-import pa.com.banco.panama.domain.repositories.UserRepository;
+import pa.com.banco.panama.domain.usecase.userusecase.SaveUserUseCase;
 
 @Path("/usuario")
 @RequiredArgsConstructor
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserController {
-    private final UserRepository userRepository;
+    private final SaveUserUseCase saveUserUseCase;
     @POST
     public Uni<User> guardarUsuario(User user){
-        return userRepository.guardarUsuario(user);
+        return saveUserUseCase.guardarUsuario(user);
     }
 }

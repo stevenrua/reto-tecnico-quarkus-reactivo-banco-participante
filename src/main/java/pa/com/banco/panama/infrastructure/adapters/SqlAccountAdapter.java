@@ -3,9 +3,9 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.errorenum.ErrorCode;
+import pa.com.banco.panama.domain.exceptions.MyExceptions;
 import pa.com.banco.panama.domain.models.Account;
 import pa.com.banco.panama.domain.models.Bank;
 import pa.com.banco.panama.domain.repositories.AccountRepository;
@@ -23,7 +23,7 @@ public class SqlAccountAdapter implements AccountRepository {
     @WithTransaction
     public Uni<Account> buscarCuentaPorIdBanco(Long idBanco) {
         return sqlAccountRepository.findByIdBanco(idBanco)
-                .onItem().ifNull().failWith(new WebApplicationException("No se encontre cuenta con id de de ese banco"))
+                .onItem().ifNull().failWith(new MyExceptions("No se encontre cuenta con id de de ese banco"))
                 .map(accountEntity -> Account.builder()
                         .idCuenta(accountEntity.getIdCuenta())
                         .numeroCuenta(accountEntity.getNumeroCuenta())
@@ -35,7 +35,7 @@ public class SqlAccountAdapter implements AccountRepository {
     @WithSession
     public Uni<Account> buscarCuentaPorNumeroCuenta(String numeroCuenta) {
         return sqlAccountRepository.findByNumeroCuenta(numeroCuenta)
-                .onItem().ifNull().failWith(new WebApplicationException("No se encontre cuenta con ese numero de cuenta"))
+                .onItem().ifNull().failWith(new MyExceptions("No se encontre cuenta con ese numero de cuenta"))
                 .map(accountEntity -> Account.builder()
                         .idCuenta(accountEntity.getIdCuenta())
                         .numeroCuenta(accountEntity.getNumeroCuenta())
@@ -50,10 +50,10 @@ public class SqlAccountAdapter implements AccountRepository {
         return bankRepository.buscarBancoPorId(account.getBanco().getIdBanco())
                 .flatMap(bank -> {
                     return sqlAccountRepository.findByIdBanco(account.getBanco().getIdBanco())
-                            .onItem().ifNotNull().failWith(new WebApplicationException(ErrorCode.ERROR_ACC00_BANK_REGISTERED.getMessage()))
+                            .onItem().ifNotNull().failWith(new MyExceptions(ErrorCode.ERROR_ACC00_BANK_REGISTERED.getMessage()))
                             .flatMap(account1 -> {
                                 return sqlAccountRepository.findByNumeroCuenta(account.getNumeroCuenta())
-                                        .onItem().ifNotNull().failWith(new WebApplicationException(ErrorCode.ERROR_ACC01_NUMBER_ACCOUNT_REGISTERED.getMessage()))
+                                        .onItem().ifNotNull().failWith(new MyExceptions(ErrorCode.ERROR_ACC01_NUMBER_ACCOUNT_REGISTERED.getMessage()))
                                         .flatMap(ignore -> {
                                             return sqlAccountRepository.persist(AccountEntity.builder()
                                                             .numeroCuenta(account.getNumeroCuenta())

@@ -3,9 +3,9 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.errorenum.ErrorCode;
+import pa.com.banco.panama.domain.exceptions.MyExceptions;
 import pa.com.banco.panama.domain.models.Bank;
 import pa.com.banco.panama.domain.repositories.BankRepository;
 import pa.com.banco.panama.infrastructure.entities.BankEntity;
@@ -29,7 +29,7 @@ public class SqlBankAdapter implements BankRepository {
                         .collect(Collectors.toList()))
                 .map(listaBancos ->{
                     if (listaBancos.isEmpty()) {
-                        throw new WebApplicationException(ErrorCode.ERROR_B00_LIST_BANK_EMPTY.getMessage());
+                        throw new MyExceptions(ErrorCode.ERROR_B00_LIST_BANK_EMPTY.getMessage());
                     }
                     return listaBancos;
                 });
@@ -38,7 +38,7 @@ public class SqlBankAdapter implements BankRepository {
     @WithSession
     public Uni<Bank> buscarBancoPorId(Long id) {
         return sqlBankRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
+                .onItem().ifNull().failWith(new MyExceptions(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
                 .map(bankEntity -> Bank.builder()
                         .idBanco(bankEntity.getIdBanco())
                         .nombreBanco(bankEntity.getNombreBanco())
@@ -62,7 +62,7 @@ public class SqlBankAdapter implements BankRepository {
     @WithTransaction
     public Uni<Bank> actualizarBanco(Long id, Bank bank) {
         return sqlBankRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
+                .onItem().ifNull().failWith(new MyExceptions(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
                 .flatMap(bankEntity -> {
                     bankEntity.setNombreBanco(bank.getNombreBanco());
                     return sqlBankRepository.persist(bankEntity)
@@ -78,7 +78,7 @@ public class SqlBankAdapter implements BankRepository {
     @WithTransaction
     public Uni<Void> borrarBanco(Long id) {
         return sqlBankRepository.findById(id)
-                .onItem().ifNull().failWith(new WebApplicationException(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
+                .onItem().ifNull().failWith(new MyExceptions(ErrorCode.ERROR_B01_BANK_NOT_FOUND.getMessage()))
                 .flatMap(sqlBankRepository::delete);
     }
 }
