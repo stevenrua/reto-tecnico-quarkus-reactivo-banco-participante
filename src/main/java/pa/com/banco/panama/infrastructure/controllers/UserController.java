@@ -6,7 +6,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.ext.Provider;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.models.User;
 import pa.com.banco.panama.domain.repositories.UserRepository;
@@ -15,7 +14,6 @@ import pa.com.banco.panama.domain.repositories.UserRepository;
 @RequiredArgsConstructor
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Provider
 public class UserController {
     private final UserRepository userRepository;
     @POST

@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Provider
 public class CountryController {
     private final CountryRepository countryRepository;
     @GET

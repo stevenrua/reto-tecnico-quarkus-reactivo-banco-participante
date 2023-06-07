@@ -1,9 +1,7 @@
 package pa.com.banco.panama.infrastructure.controllers;
-
 import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.ext.Provider;
 import lombok.RequiredArgsConstructor;
 import pa.com.banco.panama.domain.models.Account;
 import pa.com.banco.panama.domain.repositories.AccountRepository;
@@ -12,7 +10,6 @@ import pa.com.banco.panama.domain.repositories.AccountRepository;
 @RequiredArgsConstructor
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Provider
 public class AccountController {
     private final AccountRepository accountRepository;
     @GET
